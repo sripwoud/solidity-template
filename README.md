@@ -1,66 +1,30 @@
-## Foundry
+| <img width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/solidity/solidity-original.svg" /> | ETH DAPP TEMPLATE |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------- |
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+![main GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/sripwoud/solidity-template/main.yml?branch=master&label=master)
+[![Coverage Status](https://coveralls.io/repos/github/sripwoud/solidity-template/badge.svg?branch=main)](https://coveralls.io/github/sripwoud/solidity-template?branch=master)
 
-Foundry consists of:
+| Feature                                                                                                               | With                                                                                         | Configuration File                                     |
+| --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Continuous Integration                                                                                                | [github workflow](https://docs.github.com/en/actions/using-workflows)                        | [.github/workflows](./.github/workflows)               |
+| Conventional Commits (`main` branch only)                                                                             | [convco](https://github.com/convco/convco)                                                   | [.convco](./.convco)                                   |
+| Conventional PR Titles (because I only squash merge and base changelogs/semantic versioning on `main` commit history) | [amann/action-semantic-pull-request](https://github.com/amannn/action-semantic-pull-request) | [semantic-pr.yml](./.github/workflows/semantic-pr.yml) |
+| Git Hooks                                                                                                             | [hk](https://hk.jdx.dev/)                                                                    | [hk.pkl](./hk.pkl)                                     |
+| Formatting                                                                                                            | [dprint](https://dprint.dev/)                                                                | [.dprint.jsonc](./.biome.json)                         |
+| Smart Contract Development Tools                                                                                      | [foundry](https://book.getfoundry.sh/)                                                       | [foundry.toml](./foundry.toml)                         |
+| Tasks Runner, Environment & Runtime Management                                                                        | [mise](https://mise.dev/)                                                                    | [mise.toml](./mise.toml)                               |
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Develop
 
-## Documentation
+I use [`mise`](https://mise.jdx.dev) to manage runtimes, manage environment variables, and run tasks.\
+To install it and setup the repository:
 
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```commandline
+./setup
 ```
 
-### Test
+To run tasks interactively:
 
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+```commandline
+mise run
 ```

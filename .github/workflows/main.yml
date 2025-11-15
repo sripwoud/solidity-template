@@ -1,14 +1,50 @@
 name: main
 on:
+  # push trigger required to get coveralls monitoring of default branch
+  # pull_request required to get PR coveralls comments
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
-permissions:
-  contents: read
-# no need to bother caching bun deps
-# https://github.com/oven-sh/setup-bun/issues/14#issuecomment-1714116221
+    branches: [master]
+
 jobs:
+  changed-files:
+    runs-on: ubuntu-latest
+    outputs:
+      any_sol_changed: ${{ steps.changed-files.outputs.any_changed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tj-actions/changed-files@v45
+        id: changed-files
+        with:
+          files: |
+            .github/workflows/main.yml
+            foundry.toml
+            src/**.sol
+            test/**.sol
+
+  _tests:
+    needs: changed-files
+    if: needs.changed-files.outputs.any_sol_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+      - run: forge soldeer update
+      - run: forge coverage --report lcov --report-file lcov.info
+      - uses: coverallsapp/github-action@v2.3.0
+        with:
+          format: lcov
+          file: lcov.info
+
+  tests:
+    needs: _tests
+    if: ${{ !(failure() || cancelled()) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tests OK (passed or skipped
+        run: exit 0
+
   check:
     runs-on: ubuntu-latest
     steps:
@@ -18,7 +54,10 @@ jobs:
           mise_toml: |
             [tasks]
             "check:format" = { run = "dprint check --excludes mise.toml" }
-            "check" = { depends = "check:*" }
+            "check:solhint" = { run = "solhint **/*.sol" }
+            check = { depends = "check:*" }
             [tools]
             dprint = "latest"
-      - run: mise r check
+            "npm:solhint" = "latest"
+             "cargo:https://github.com/foundry-rs/foundry" = { version = "tag:stable", crate = "forge" }
+      - run: mise check

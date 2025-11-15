@@ -56,7 +56,6 @@ quiet = true
 
 [tools]
 "cargo:convco" = "latest"
-"cargo:soldeer" = "latest"
 dprint = "latest"
 hk = "latest"
 "npm:solhint" = "latest"
