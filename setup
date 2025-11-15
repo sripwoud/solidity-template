@@ -11,12 +11,23 @@ log() {
 
 install_mise() {
   curl https://mise.run | sh
-  echo "✅ Installed ${ORANGE}mise$RESET"
+  log "✅ Installed ${ORANGE}mise$RESET"
 }
 
 maybe_install_mise() {
   if ! command -v mise >/dev/null; then
     install_mise
+  fi
+}
+
+install_cargo_binstall() {
+  mise use -g cargo-binstall
+  log "✅ Installed ${ORANGE}cargo-binstall$RESET globally for faster cargo binaries download"
+}
+
+maybe_install_cargo_binstall() {
+  if ! command -v cargo-binstall >/dev/null; then
+    install_cargo_binstall
   fi
 }
 
@@ -72,6 +83,7 @@ EOF
 
 main() {
   maybe_install_mise
+  maybe_install_cargo_binstall
   mise up --bump
   log "To see available tasks: ${ORANGE}mise run$RESET"
   use_convco_as_git_editor_only_on_main
