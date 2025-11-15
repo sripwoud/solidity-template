@@ -6,7 +6,6 @@ remappings = [
   "forge-std-1.11.0/=dependencies/forge-std-1.11.0/",
   "openzeppelin-foundry-upgrades-0.4.0/=dependencies/openzeppelin-foundry-upgrades-0.4.0/",
 ]
-solc = "^0.8"
 
 [dependencies]
 forge-std = "1.11.0"
