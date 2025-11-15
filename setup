@@ -20,15 +20,22 @@ maybe_install_mise() {
   fi
 }
 
-install_cargo_binstall() {
-  mise use -g cargo-binstall
-  log "✅ Installed ${ORANGE}cargo-binstall$RESET globally for faster cargo binaries download"
-}
+is_foundry_installed_or_exit() {
+  local missing_tools=""
 
-maybe_install_cargo_binstall() {
-  if ! command -v cargo-binstall >/dev/null; then
-    install_cargo_binstall
+  for tool in anvil cast chisel forge; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+      missing_tools="$missing_tools $tool"
+    fi
+  done
+
+  if [ -n "$missing_tools" ]; then
+    log "❌ Missing required Foundry tools:$missing_tools"
+    log "Install Foundry: ${ORANGE}curl -L https://foundry.paradigm.xyz | bash && foundryup$RESET"
+    exit 1
   fi
+
+  log "✅ All Foundry tools installed"
 }
 
 # i don't care that much if intermediate dev branches commits aren't always conventional
@@ -82,8 +89,8 @@ EOF
 }
 
 main() {
+  is_foundry_installed_or_exit
   maybe_install_mise
-  maybe_install_cargo_binstall
   mise up --bump
   log "To see available tasks: ${ORANGE}mise run$RESET"
   use_convco_as_git_editor_only_on_main
