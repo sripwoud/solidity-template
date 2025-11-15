@@ -64,3 +64,5 @@ anvil = { version = "tag:stable", crate = "anvil", bin = "anvil" }
 cast = { version = "tag:stable", crate = "cast", bin = "cast" }
 chisel = { version = "tag:stable", crate = "chisel", bin = "chisel" }
 forge = { version = "tag:stable", crate = "forge", bin = "forge" }
+uv = "latest"
+"pipx:slither-analyzer" = "latest"
